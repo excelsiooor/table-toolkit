@@ -1,11 +1,11 @@
-{"users": [
-  {
-    "user1":{
-      "name": "John",
-      "email": "john@example.com",
-      "position": "junior",
-      "stack": "react/redux",
-      "salary": 800
+{
+  "users": [
+    {
+        "name": "John",
+        "email": "john@example.com",
+        "position": "junior",
+        "stack": "react/redux",
+        "salary": 800
     }
-  }
-]}
+  ]
+}
