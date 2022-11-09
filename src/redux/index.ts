@@ -1,8 +1,13 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
+import tableSlice from './reducers/tableSlice';
+import { tableAPI } from '../services/TableService';
+import formStatusSlice from './reducers/formStatusSlice';
 
 
 const rootReducer = combineReducers({
-
+  tableSlice,
+  formStatusSlice,
+  [tableAPI.reducerPath]: tableAPI.reducer
 })
 
 export const setupStore = () => {
@@ -10,6 +15,7 @@ export const setupStore = () => {
     reducer: rootReducer,
     middleware: (getDefaultMiddleware) => 
       getDefaultMiddleware()
+      .concat(tableAPI.middleware)
   })
 }
 
