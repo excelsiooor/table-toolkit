@@ -1,11 +1,19 @@
 {
-  "users": [
+  "rows": [
     {
-        "name": "John",
-        "email": "john@example.com",
-        "position": "junior",
-        "stack": "react/redux",
-        "salary": 800
+      "id": 0,
+      "name": "John",
+      "email": "john@example.com",
+      "position": "junior",
+      "stack": ["react", "redux"],
+      "salary": 800
     }
+  ],
+  "columns": [
+    { "id": "name", "name": "Name", "minWidth": 170 },
+    { "id": "email", "name": "Email", "minWidth": 100 },
+    { "id": "position", "name": "Position", "minWidth": 170, "align": "right"},
+    { "id": "stack", "name": "Stack", "minWidth": 170, "align": "right"},
+    { "id": "salary", "name": "Salary", "minWidth": 170, "align": "right"}
   ]
 }
