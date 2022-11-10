@@ -8,10 +8,16 @@ export const tableAPI = createApi({
   endpoints: (build) => ({
     getColumns: build.query<IColumn[], string> ({
       query: () => ({
-        url: '/columns',
+        url: `/columns`,
       }),
     }),
-    getRows: build.query<IRow[], string> ({
+    getRows: build.query<IRow[], number> ({
+      query: (page) => ({
+        url: `/rows?_limit=${page}`,
+      }),
+      providesTags: () => ['row']
+    }),
+    getMaxRows: build.query<IRow[], string> ({
       query: () => ({
         url: '/rows',
       }),

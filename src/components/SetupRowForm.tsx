@@ -13,7 +13,7 @@ const SetupRowForm: FC = () => {
   const [createRow, {isLoading, isError}] = tableAPI.useCreateRowMutation()
   const {newRow, positions, stack} = useAppSelector(state => state.tableSlice)
   const validSatus = useAppSelector(state => state.formStatusSlice)
-  const { setName, setPosition, setStack, setEmail, setSalary } = tableSlice.actions
+  const { setName, setPosition, setStack, setEmail, setSalary, setId } = tableSlice.actions
   const {
     setDisabled,
     setErrorName, 
@@ -126,6 +126,7 @@ const SetupRowForm: FC = () => {
       || validSatus.isErrorPosition 
       || validSatus.isErrorStack 
       || validSatus.isErrorSalary !== true) {
+      dispatch(setId(Date.now()))
       createRow(newRow)
     }
   }
