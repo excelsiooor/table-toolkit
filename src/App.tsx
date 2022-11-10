@@ -2,10 +2,9 @@ import './App.css';
 import { tableAPI } from './services/TableService';
 import { tableSlice } from './redux/reducers/tableSlice';
 import { useAppSelector, useAppDispatch } from './hooks/redux';
-import{ IconButton, TableCell, TableRow, Tooltip } from '@mui/material';
+import{ CircularProgress, IconButton, TableCell, TableRow, Tooltip } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import ClearIcon from '@mui/icons-material/Clear';
-import UpgradeIcon from '@mui/icons-material/Upgrade';
 import DataTable from './components/DataTable';
 import Lyout from './components/re-use/Loyout';
 import Loader from './components/UI/Loader/Loader';
@@ -19,14 +18,15 @@ function App() {
   const { setModalStatus, setId } = tableSlice.actions
   const {data: columns, isLoading: loadColumns, isError: errorColumns} = tableAPI.useGetColumnsQuery('');
   const {data: rows, isLoading: loadRows, isError: errorRows} = tableAPI.useGetRowsQuery('');
-  
+  const [deleteRow, {isLoading: removeProcess, isError: removeError}] = tableAPI.useDeleteRowMutation()
+
   const openModal = () => {
+    dispatch(setId(Date.now()))
     dispatch(setModalStatus(true))
   }
   const closeModal = () => {
     dispatch(setModalStatus(false))
   }
-
 
   return (
     <Lyout>
@@ -52,31 +52,42 @@ function App() {
             return (
               <TableRow hover role="checkbox" tabIndex={-1} key={row.id}>
                 {columns.map((column) =>
-                  <TableCell key={column.id} align={column.align}>
+                  <TableCell 
+                    key={column.id} 
+                    align={column.align}
+                  >
                     {
                       column.id === 'salary'
                       ?row[column.id]+'$'
+                      :column.id === 'remove'
+                      ?<Tooltip title="Remove Row">
+                        <IconButton onClick={() => deleteRow(row)}>
+                          {
+                            removeProcess
+                            ?<CircularProgress size={24}/>
+                            :<ClearIcon/>
+                          }
+                        </IconButton>
+                      </Tooltip>
                       :row[column.id]
                     }
                   </TableCell>
                   )}
-                  <TableCell>
-                    <Tooltip title="Delete Row">
-                      <IconButton>
-                        <ClearIcon/>
-                      </IconButton>
-                    </Tooltip>
-                  </TableCell>
               </TableRow>
             );
           })}
         </DataTable>
       }
+      {removeError&&
+        <Error>
+          Remove Error
+        </Error>
+      }
       <SetupRowModal
         status={modalStatus}
         closeModal={closeModal}
       >
-        <SetupRowForm closeModal={closeModal}/>
+        <SetupRowForm/>
       </SetupRowModal>
     </Lyout>
   );

@@ -1,19 +1,79 @@
 {
   "rows": [
     {
-      "id": 0,
+      "id": 1668076762986,
       "name": "John",
-      "email": "john@example.com",
+      "email": "mail@example.com",
+      "position": "middle",
+      "stack": [
+        "JS/TS/React/Redux"
+      ],
+      "salary": 1000
+    },
+    {
+      "id": 1668076814938,
+      "name": "Mark",
+      "email": "mail@example.com",
+      "position": "middle",
+      "stack": [
+        "JS/TS/React/Redux/Sass"
+      ],
+      "salary": 2000
+    },
+    {
+      "id": 1668076849332,
+      "name": "Bill",
+      "email": "mail@example.com",
       "position": "junior",
-      "stack": ["react", "redux"],
+      "stack": [
+        "JS/React/Redux"
+      ],
       "salary": 800
+    },
+    {
+      "id": 1668076873972,
+      "name": "Arnold",
+      "email": "mail@example.com",
+      "position": "senior",
+      "stack": [
+        "JS/React/Redux/TS/node.js"
+      ],
+      "salary": 4000
     }
   ],
   "columns": [
-    { "id": "name", "name": "Name", "minWidth": 170 },
-    { "id": "email", "name": "Email", "minWidth": 100 },
-    { "id": "position", "name": "Position", "minWidth": 170, "align": "right"},
-    { "id": "stack", "name": "Stack", "minWidth": 170, "align": "right"},
-    { "id": "salary", "name": "Salary", "minWidth": 170, "align": "right"}
+    {
+      "id": "name",
+      "name": "Name",
+      "minWidth": 170
+    },
+    {
+      "id": "email",
+      "name": "Email",
+      "minWidth": 100
+    },
+    {
+      "id": "position",
+      "name": "Position",
+      "minWidth": 170,
+      "align": "right"
+    },
+    {
+      "id": "stack",
+      "name": "Stack",
+      "minWidth": 170,
+      "align": "right"
+    },
+    {
+      "id": "salary",
+      "name": "Salary",
+      "minWidth": 170,
+      "align": "right"
+    },
+    {
+      "id": "remove",
+      "name": "Remove",
+      "align": "right"
+    }
   ]
 }

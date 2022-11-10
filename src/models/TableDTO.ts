@@ -8,7 +8,7 @@ export interface IRow {
 }
 
 export interface IColumn {
-  id: "name" | "email" | "position" | "stack" | "salary";
+  id: "name" | "email" | "position" | "stack" | "salary" | "remove";
   name: string;
   minWidth?: number;
   align?: 'right';

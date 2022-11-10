@@ -4,17 +4,18 @@ import { validEmail } from '../global/validate';
 import { useAppDispatch, useAppSelector } from '../hooks/redux';
 import { formStatusSlice } from '../redux/reducers/formStatusSlice';
 import { tableSlice } from '../redux/reducers/tableSlice';
+import { tableAPI } from '../services/TableService';
+import Error from './UI/Alert/Error';
+import Loader from './UI/Loader/Loader';
 
-interface ISetupRowForm {
-  closeModal: () => void;
-}
-
-const SetupRowForm: FC<ISetupRowForm> = ({closeModal}) => {
+const SetupRowForm: FC = () => {
   const dispatch = useAppDispatch()
+  const [createRow, {isLoading, isError}] = tableAPI.useCreateRowMutation()
   const {newRow, positions, stack} = useAppSelector(state => state.tableSlice)
   const validSatus = useAppSelector(state => state.formStatusSlice)
   const { setName, setPosition, setStack, setEmail, setSalary } = tableSlice.actions
-  const { 
+  const {
+    setDisabled,
     setErrorName, 
     setErrorEmail, 
     setErrorPosition, 
@@ -30,9 +31,11 @@ const SetupRowForm: FC<ISetupRowForm> = ({closeModal}) => {
   const changeName = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     dispatch(setName(e.target.value))
     if (e.target.value === '') {
+      dispatch(setDisabled(true))
       dispatch(setErrorName(true))
       dispatch(setNameMass('please fill the field'))
     } else {
+      dispatch(setDisabled(false))
       dispatch(setErrorName(false))
       dispatch(setNameMass(''))
     }
@@ -40,12 +43,15 @@ const SetupRowForm: FC<ISetupRowForm> = ({closeModal}) => {
   const changeEmail = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     dispatch(setEmail(e.target.value))
     if (e.target.value === '') {
+      dispatch(setDisabled(true))
       dispatch(setErrorEmail(true))
       dispatch(setEmailMass('please fill the field'))
     } else if (!validEmail.test(e.target.value)) {
+      dispatch(setDisabled(true))
       dispatch(setErrorEmail(true))
       dispatch(setEmailMass('incorrect email address'))
     }else {
+      dispatch(setDisabled(false))
       dispatch(setErrorEmail(false))
       dispatch(setEmailMass(''))
     }
@@ -53,9 +59,11 @@ const SetupRowForm: FC<ISetupRowForm> = ({closeModal}) => {
   const changeSalary = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     dispatch(setSalary(parseInt(e.target.value)))
     if (e.target.value === '') {
+      dispatch(setDisabled(true))
       dispatch(setErrorSalary(true))
       dispatch(setSalaryMass('please fill the field'))
     } else {
+      dispatch(setDisabled(false))
       dispatch(setErrorSalary(false))
       dispatch(setSalaryMass(''))
     }
@@ -65,9 +73,11 @@ const SetupRowForm: FC<ISetupRowForm> = ({closeModal}) => {
     reason = 'selectOption'
     dispatch(setPosition(value))
     if (value === '' || value === null) {
+      dispatch(setDisabled(true))
       dispatch(setErrorPosition(true))
       dispatch(setPositionMass('please fill the field'))
     } else {
+      dispatch(setDisabled(false))
       dispatch(setErrorPosition(false))
       dispatch(setPositionMass(''))
     }
@@ -76,9 +86,11 @@ const SetupRowForm: FC<ISetupRowForm> = ({closeModal}) => {
     reason = 'selectOption'
     dispatch(setStack(value))
     if (value.length === 0) {
+      dispatch(setDisabled(true))
       dispatch(setErrorStack(true))
       dispatch(setStackMass('please fill the field'))
     } else {
+      dispatch(setDisabled(false))
       dispatch(setErrorStack(false))
       dispatch(setStackMass(''))
     }
@@ -86,29 +98,35 @@ const SetupRowForm: FC<ISetupRowForm> = ({closeModal}) => {
 
   const sendNewRow = () => {
     if (newRow.name === '') {
+      dispatch(setDisabled(true))
       dispatch(setErrorName(true))
       dispatch(setNameMass('please fill the field'))
     } else if (newRow.email === '') {
+      dispatch(setDisabled(true))
       dispatch(setErrorEmail(true))
       dispatch(setEmailMass('please fill the field'))
     } else if (!validEmail.test(newRow.email)) {
+      dispatch(setDisabled(true))
       dispatch(setErrorEmail(true))
       dispatch(setEmailMass('incorrect email address'))
+    } else if (newRow.salary === 0) {
+      dispatch(setDisabled(true))
+      dispatch(setErrorSalary(true))
+      dispatch(setSalaryMass('please fill the field'))
     } else if (newRow.position === null) {
+      dispatch(setDisabled(true))
       dispatch(setErrorPosition(true))
       dispatch(setPositionMass('please fill the field'))
     } else if (newRow.stack.length === 0) {
+      dispatch(setDisabled(true))
       dispatch(setErrorStack(true))
       dispatch(setStackMass('please fill the field'))
-    } else if (newRow.salary === 0) {
-      dispatch(setErrorSalary(true))
-      dispatch(setSalaryMass('please fill the field'))
     } else if (validSatus.isErrorName 
       || validSatus.isErrorEmail 
       || validSatus.isErrorPosition 
       || validSatus.isErrorStack 
       || validSatus.isErrorSalary !== true) {
-      closeModal()
+      createRow(newRow)
     }
   }
 
@@ -174,7 +192,16 @@ const SetupRowForm: FC<ISetupRowForm> = ({closeModal}) => {
           />
         )}
       />
-      <Button variant="contained" onClick={sendNewRow}>SEND</Button>
+      {
+        isLoading
+        ? <Loader/>
+        : <Button disabled={validSatus.isDisabled} variant="contained" onClick={sendNewRow}>SEND</Button>
+      }
+      { isError &&
+        <Error>
+          Create Error
+        </Error>
+      }
     </>
   );
 };

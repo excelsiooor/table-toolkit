@@ -1,6 +1,5 @@
-import { Modal, Paper } from '@mui/material';
+import { Modal, Paper} from '@mui/material';
 import { FC } from "react";
-import { styleForModal } from "./UI/theme";
 
 interface ISetupRowModalProps {
   children: React.ReactElement| React.ReactNode;
@@ -17,7 +16,24 @@ const SetupRowModal: FC<ISetupRowModalProps> = ({children, status, closeModal}) 
         aria-labelledby="keep-mounted-modal-title"
         aria-describedby="keep-mounted-modal-description"
       >
-        <Paper component="form" sx={styleForModal}>
+        <Paper 
+          component="form" 
+          sx={{
+            position: 'absolute' as 'absolute',
+            display: 'flex',
+            alignItems: 'center',
+            flexDirection: 'column',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            maxWidth: 400,
+            width: '100%',
+            bgcolor: 'background.paper',
+            boxShadow: 24,
+            p: 2,
+            '& > :not(style)': { m: 1 },
+          }}
+          >
           {children}
         </Paper>
     </Modal>

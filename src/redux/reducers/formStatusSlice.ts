@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface ITable {
+  isDisabled: boolean;
   isErrorName: boolean;
   isErrorEmail: boolean;  
   isErrorPosition: boolean;  
@@ -14,6 +15,7 @@ interface ITable {
 }
 
 const initialState: ITable = {
+  isDisabled: false,
   isErrorName: false,
   isErrorEmail: false,
   isErrorPosition: false,
@@ -30,6 +32,9 @@ export const formStatusSlice = createSlice({
   name: 'formStatusSlice',
   initialState,
   reducers: {
+    setDisabled: (state, action: PayloadAction<boolean>) => {
+      state.isDisabled = action.payload
+    },
     setErrorName: (state, action: PayloadAction<boolean>) => {
       state.isErrorName = action.payload
     },
