@@ -211,14 +211,14 @@
       "salary": 1213
     },
     {
-      "id": 1668085573141,
-      "name": "qwe",
-      "email": "homenich101@gmail.com",
-      "position": "junior",
+      "id": 1668085573142,
+      "name": "Sasha",
+      "email": "sasha@example.com",
+      "position": "team-lead",
       "stack": [
-        "JS"
+        "JS/TS/React/Redux/genshin"
       ],
-      "salary": 1213
+      "salary": 1000000
     }
   ],
   "columns": [
